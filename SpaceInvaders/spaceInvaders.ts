@@ -1,22 +1,27 @@
-namespace spaceInvaders {
+namespace SpaceInvaders {
     import ƒ = FudgeCore;
     window.addEventListener("load", init);
     let gameNode: ƒ.Node = new ƒ.Node("Game");
     let playerNode: ƒ.Node = new ƒ.Node("Player");
     let motherShip: ƒ.Node = new ƒ.Node("Enemy_Mothership");
-    let shield1: ƒ.Node = new ƒ.Node("Shield1"); 
-    let shield2: ƒ.Node = new ƒ.Node("Shield2"); 
-    let shield3: ƒ.Node = new ƒ.Node("Shield3"); 
-    let shield4: ƒ.Node = new ƒ.Node("Shield4"); 
 
-    let allInvaders: ƒ.Node[] = [];
+    export let quadMesh: ƒ.Mesh = new ƒ.MeshQuad("Quad");
+    export let material: ƒ.Material = new ƒ.Material("Material", ƒ.ShaderUniColor, new ƒ.CoatColored(new ƒ.Color(0.41, 0.8, 0.41, 1)));
+
+    let shield1: ƒ.Node = new ƒ.Node("Shield1");
+    let shield2: ƒ.Node = new ƒ.Node("Shield2");
+    let shield3: ƒ.Node = new ƒ.Node("Shield3");
+    let shield4: ƒ.Node = new ƒ.Node("Shield4");
+
+    let allInvaders: ƒ.Node = new ƒ.Node("InvaderArmy");
+    let invaderUnit: ƒ.Node[] = [];
     let invaderCount: number = 0;
 
     let bossRow: number = 13;
     let enemyRow: number = 11;
     let shieldRow: number = 3;
     let rowStart: number = -7;
-    
+
 
     let viewportNode: ƒ.Node = new ƒ.Node("Viewport");
     let viewport: ƒ.Viewport = new ƒ.Viewport();
@@ -53,10 +58,10 @@ namespace spaceInvaders {
 
         let shield1CmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(shield1Material);
         shield1.addComponent(shield1CmpMaterial);
-        shield1.mtxLocal.translateY(shieldRow);
-        shield1.mtxLocal.translateX(-6);
-        shield1.mtxLocal.scaleX(2);
-        shield1.mtxLocal.scaleY(0.5);
+        shield1.getComponent(ƒ.ComponentMesh).mtxPivot.translateY(shieldRow);
+        shield1.getComponent(ƒ.ComponentMesh).mtxPivot.translateX(-6);
+        shield1.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(0.5);
+        shield1.getComponent(ƒ.ComponentMesh).mtxPivot.scaleX(2);
 
         viewportNode.appendChild(shield1);
 
@@ -71,10 +76,10 @@ namespace spaceInvaders {
 
         let shield2CmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(shield2Material);
         shield2.addComponent(shield2CmpMaterial);
-        shield2.mtxLocal.translateY(shieldRow);
-        shield2.mtxLocal.translateX(-2);
-        shield2.mtxLocal.scaleX(2);
-        shield2.mtxLocal.scaleY(0.5);
+        shield2.getComponent(ƒ.ComponentMesh).mtxPivot.translateY(shieldRow);
+        shield2.getComponent(ƒ.ComponentMesh).mtxPivot.translateX(-2);
+        shield2.getComponent(ƒ.ComponentMesh).mtxPivot.scaleX(2);
+        shield2.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(0.5);
 
         viewportNode.appendChild(shield2);
 
@@ -89,10 +94,10 @@ namespace spaceInvaders {
 
         let shield3CmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(shield3Material);
         shield3.addComponent(shield3CmpMaterial);
-        shield3.mtxLocal.translateY(shieldRow);
-        shield3.mtxLocal.translateX(2);
-        shield3.mtxLocal.scaleX(2);
-        shield3.mtxLocal.scaleY(0.5);
+        shield3.getComponent(ƒ.ComponentMesh).mtxPivot.translateY(shieldRow);
+        shield3.getComponent(ƒ.ComponentMesh).mtxPivot.translateX(2);
+        shield3.getComponent(ƒ.ComponentMesh).mtxPivot.scaleX(2);
+        shield3.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(0.5);
 
         viewportNode.appendChild(shield3);
 
@@ -107,10 +112,10 @@ namespace spaceInvaders {
 
         let shield4CmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(shield4Material);
         shield4.addComponent(shield4CmpMaterial);
-        shield4.mtxLocal.translateY(shieldRow);
-        shield4.mtxLocal.translateX(6);
-        shield4.mtxLocal.scaleX(2);
-        shield4.mtxLocal.scaleY(0.5);
+        shield4.getComponent(ƒ.ComponentMesh).mtxPivot.translateY(shieldRow);
+        shield4.getComponent(ƒ.ComponentMesh).mtxPivot.translateX(6);
+        shield4.getComponent(ƒ.ComponentMesh).mtxPivot.scaleX(2);
+        shield4.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(0.5);
 
         viewportNode.appendChild(shield4);
 
@@ -126,8 +131,8 @@ namespace spaceInvaders {
 
         let motherShipCmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(motherShipMaterial);
         motherShip.addComponent(motherShipCmpMaterial);
-        motherShip.mtxLocal.translateY(bossRow);
-        motherShip.mtxLocal.scaleX(2);
+        motherShip.getComponent(ƒ.ComponentMesh).mtxPivot.translateY(bossRow);
+        motherShip.getComponent(ƒ.ComponentMesh).mtxPivot.scaleX(2);
 
         viewportNode.appendChild(motherShip);
 
@@ -150,48 +155,53 @@ namespace spaceInvaders {
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
         ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     }
-
+    console.log(allInvaders);
     function update(_event: Event): void {
         if (enemyRow > 6) {
-            
-        spawner();
+            spawner();
         }
-        /*   let rotSpeed: number = 90;
-           let timeSinceLastFrameInSeconds: number = ƒ.Loop.timeFrameReal / 1000;
-           node.getComponent(ƒ.ComponentMesh).mtxPivot.rotateY(rotSpeed * timeSinceLastFrameInSeconds); */
         viewport.draw();
     }
 
     function spawner(): void {
-        allInvaders[invaderCount] = new ƒ.Node("Invader " + invaderCount);
-        allInvaders[invaderCount].addComponent(new ƒ.ComponentTransform());
+        invaderUnit[invaderCount] = new ƒ.Node("Invader " + invaderCount);
+        invaderUnit[invaderCount].addComponent(new ƒ.ComponentTransform());
 
-        let invaderMesh: ƒ.Mesh = new ƒ.MeshQuad("Invader_Mesh " + invaderCount);
-        allInvaders[invaderCount].addComponent(new ƒ.ComponentMesh(invaderMesh));
+        export let invaderMesh: ƒ.Mesh = new ƒ.MeshQuad("Invader_Mesh " + invaderCount);
+        invaderUnit[invaderCount].addComponent(new ƒ.ComponentMesh(invaderMesh));
 
-        let invaderMaterial: ƒ.Material = new ƒ.Material("Mothershipmaterial " + invaderCount, ƒ.ShaderUniColor, new ƒ.CoatColored(new ƒ.Color(1, 1, 1, 1)));
+        export let invaderMaterial: ƒ.Material = new ƒ.Material("Mothershipmaterial " + invaderCount, ƒ.ShaderUniColor, new ƒ.CoatColored(new ƒ.Color(1, 1, 1, 1)));
         let invaderCmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(invaderMaterial);
-        allInvaders[invaderCount].addComponent(invaderCmpMaterial);
+        invaderUnit[invaderCount].addComponent(invaderCmpMaterial);
 
-        allInvaders[invaderCount].mtxLocal.translateX(rowStart + invaderCount * 2);
-        allInvaders[invaderCount].mtxLocal.translateY(enemyRow);
-        
+        allInvaders.appendChild(invaderUnit[invaderCount]);
+
+        invaderUnit[invaderCount].mtxLocal.translateX(rowStart + invaderCount * 2);
+        invaderUnit[invaderCount].mtxLocal.translateY(enemyRow);
+
         if (invaderCount == 8) {
             enemyRow = enemyRow - 2;
             invaderCount = 0;
         } else {
-            viewportNode.appendChild(allInvaders[invaderCount]);
+            viewportNode.appendChild(invaderUnit[invaderCount]);
             invaderCount += 1;
         }
-        
+
     }
 
 }
 
-//Alt+Shift+F = auto-format
+
 /*
+Alt+Shift+F = auto-format
 Koordinatensystem = Rechtshändig
 x = links (-) - rechts (+)
 y = unten (-) - oben (+)
 z = vorne (-) - honten (+)
+F2 = refactor
+Strg + D = Mehrere Cursor
+Strg + # = ein/auskommentieren
+Alt + Shift + A = Block ein/auskommentieren
+Alt + Shift + Pfeil oben/unten = Zeile kopieren
+Alt + Pfeil oben/unten = Zeile verschieben
 */
