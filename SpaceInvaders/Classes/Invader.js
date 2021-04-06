@@ -6,7 +6,7 @@ var SpaceInvaders;
     SpaceInvaders.spawnX = -10;
     SpaceInvaders.spawnY = 17;
     class Invader extends ƒ.Node {
-        constructor(_x, _y) {
+        constructor() {
             super("Invader" + SpaceInvaders.spawnX + "/" + SpaceInvaders.spawnY);
             this.addComponent(new ƒ.ComponentMaterial());
             this.addComponent(new ƒ.ComponentTransform());

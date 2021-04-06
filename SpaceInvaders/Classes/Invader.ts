@@ -4,7 +4,7 @@ namespace SpaceInvaders {
     export let spawnX: number = -10;
     export let spawnY: number = 17;
     export class Invader extends ƒ.Node {
-        constructor(_x: number, _y: number) {
+        constructor() {
             super("Invader" + spawnX + "/" + spawnY);
             this.addComponent(new ƒ.ComponentMaterial()); 
 
