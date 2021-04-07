@@ -5,13 +5,14 @@ namespace SpaceInvaders {
     let viewportNode: ƒ.Node = new ƒ.Node("Viewport");
     let viewport: ƒ.Viewport = new ƒ.Viewport();
     export let playerNode: ƒ.Node = new Player(playerX, playerY);
-    let motherShipNode: ƒ.Node = new Mothership(playerX, playerY);
+    let motherShipNode: ƒ.Node = new Mothership(shipX, shipY);
     let movementspeed: number = 15;
     let leftBorder: number = -13;
     let rightBorder: number = 13;
     let laserNode: ƒ.Node = new ƒ.Node("LaserNode");
     let bulletVisible: boolean = false;
     gameNode.appendChild(viewportNode);
+    /* let backGroundNode: ƒ.Node = new Background(backX, backY, backZ); */
     
 
     function init(_event: Event): void {
@@ -21,6 +22,7 @@ namespace SpaceInvaders {
         viewportNode.addChild(playerNode);
         viewportNode.addChild(motherShipNode);
         viewportNode.addChild(laserNode);
+        /* viewportNode.addChild(backGroundNode); */
 
         let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(30);
@@ -29,7 +31,7 @@ namespace SpaceInvaders {
 
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
         console.log(gameNode);
-        
+
         for (let invaderCount: number = 1; invaderCount <= 55; invaderCount++) {
             spawnInvader();
         }

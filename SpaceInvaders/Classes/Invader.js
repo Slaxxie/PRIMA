@@ -19,11 +19,9 @@ var SpaceInvaders;
             let newCoat = new ƒ.CoatTextured();
             let newMtr = new ƒ.Material("Invader_Material", ƒ.ShaderTexture, newCoat);
             let oldComCoat = this.getComponent(ƒ.ComponentMaterial);
-            newTxt.load("invader.png");
+            newTxt.load("invader2.png");
             newCoat.texture = newTxt;
             oldComCoat.material = newMtr;
-            this.getComponent(ƒ.ComponentMesh).mtxPivot.scaleX(1);
-            this.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(8 / 11);
         }
     }
     SpaceInvaders.Invader = Invader;

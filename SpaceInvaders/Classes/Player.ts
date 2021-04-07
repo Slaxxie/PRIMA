@@ -19,14 +19,10 @@ namespace SpaceInvaders {
             let newMtr: ƒ.Material = new ƒ.Material("Player_Material", ƒ.ShaderTexture, newCoat);
             let oldComCoat: ƒ.ComponentMaterial = this.getComponent(ƒ.ComponentMaterial);
 
-
-            newTxt.load("player.png");
+            newTxt.load("player2.png");
 
             newCoat.texture = newTxt;
             oldComCoat.material = newMtr;
-            
-            this.getComponent(ƒ.ComponentMesh).mtxPivot.scaleX(1);
-            this.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(8 / 11);
         } 
     }      
 }

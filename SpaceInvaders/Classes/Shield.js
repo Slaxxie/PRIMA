@@ -14,22 +14,22 @@ var SpaceInvaders;
             this.addComponent(new ƒ.ComponentTransform());
             this.mtxLocal.translateX(SpaceInvaders.shieldX);
             this.mtxLocal.translateY(SpaceInvaders.shieldY);
-            for (let blockCount = 0; blockCount <= 40; blockCount++) {
+            this.addComponent(new ƒ.ComponentMaterial());
+            for (let blockCount = 1; blockCount <= 41; blockCount++) {
                 allBlocks[blockCount] = new ƒ.Node("Block" + blockCount);
                 allBlocks[blockCount].addComponent(new ƒ.ComponentTransform());
                 let shieldMesh = new ƒ.MeshQuad("ShieldBlock");
                 let cmpMesh = new ƒ.ComponentMesh(shieldMesh);
                 allBlocks[blockCount].addComponent(cmpMesh);
-                let material = new ƒ.Material("Material", ƒ.ShaderUniColor, new ƒ.CoatColored(new ƒ.Color(0, 0.25, 0.25, 1)));
-                let cmpMaterial = new ƒ.ComponentMaterial(material);
+                let texture = new ƒ.TextureImage("wall2.png");
+                let mtr = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), texture));
+                let cmpMaterial = new ƒ.ComponentMaterial(mtr);
                 allBlocks[blockCount].addComponent(cmpMaterial);
                 allBlocks[blockCount].getComponent(ƒ.ComponentMesh).mtxPivot.scaleX(1 / 3);
                 allBlocks[blockCount].getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(1 / 3);
-                allBlocks[blockCount].mtxLocal.translateX(xPos[blockCount]);
-                allBlocks[blockCount].mtxLocal.translateY(yPos[blockCount]);
+                allBlocks[blockCount].mtxLocal.translateX(xPos[blockCount - 1]);
+                allBlocks[blockCount].mtxLocal.translateY(yPos[blockCount - 1]);
                 this.appendChild(allBlocks[blockCount]);
-                console.log(allBlocks[blockCount]);
-                console.log(blockCount);
             }
         }
     }

@@ -7,18 +7,20 @@ var SpaceInvaders;
     let viewportNode = new ƒ.Node("Viewport");
     let viewport = new ƒ.Viewport();
     SpaceInvaders.playerNode = new SpaceInvaders.Player(SpaceInvaders.playerX, SpaceInvaders.playerY);
-    let motherShipNode = new SpaceInvaders.Mothership(SpaceInvaders.playerX, SpaceInvaders.playerY);
+    let motherShipNode = new SpaceInvaders.Mothership(SpaceInvaders.shipX, SpaceInvaders.shipY);
     let movementspeed = 15;
     let leftBorder = -13;
     let rightBorder = 13;
     let laserNode = new ƒ.Node("LaserNode");
     let bulletVisible = false;
     gameNode.appendChild(viewportNode);
+    /* let backGroundNode: ƒ.Node = new Background(backX, backY, backZ); */
     function init(_event) {
         const canvas = document.querySelector("canvas");
         viewportNode.addChild(SpaceInvaders.playerNode);
         viewportNode.addChild(motherShipNode);
         viewportNode.addChild(laserNode);
+        /* viewportNode.addChild(backGroundNode); */
         let cmpCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(30);
         cmpCamera.mtxPivot.translateY(10);
