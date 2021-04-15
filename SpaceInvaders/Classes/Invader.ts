@@ -1,31 +1,19 @@
 namespace SpaceInvaders {
     import ƒ = FudgeCore;
-    export let rowCount: number = 0;
-    export let spawnX: number = -10;
-    export let spawnY: number = 17;
-    export class Invader extends ƒ.Node {
-        constructor() {
-            super("Invader" + spawnX + "/" + spawnY);
-            this.addComponent(new ƒ.ComponentMaterial()); 
-
-            this.addComponent(new ƒ.ComponentTransform());
-            this.mtxLocal.translateX(spawnX);
-            this.mtxLocal.translateY(spawnY);
-            
-            let invaderMesh: ƒ.Mesh = new ƒ.MeshQuad("Invader_Mesh");
-            
-            let cmpMesh: ƒ.ComponentMesh = new ƒ.ComponentMesh(invaderMesh);
-            this.addComponent(cmpMesh);
-           
-            let newTxt: ƒ.TextureImage = new ƒ.TextureImage();
-            let newCoat: ƒ.CoatTextured = new ƒ.CoatTextured();
-            let newMtr: ƒ.Material = new ƒ.Material("Invader_Material", ƒ.ShaderTexture, newCoat);
-            let oldComCoat: ƒ.ComponentMaterial = this.getComponent(ƒ.ComponentMaterial);
-
-            newTxt.load("invader2.png");
-
-            newCoat.texture = newTxt;
-            oldComCoat.material = newMtr;
-        } 
+    export class Invader extends QuadNode {
+        private static count: number = 0;
+       
+        constructor(_pos: ƒ.Vector2) {
+            let scale: ƒ.Vector2 = new ƒ.Vector2(1, 1);
+            super("Invader" + (++Invader.count), _pos, scale);
+            let texture: ƒ.TextureImage = new ƒ.TextureImage("invader2.png");
+            let material: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), texture));
+            this.addComponent(new ƒ.ComponentMaterial(material));
+        }
+        public move(_movement: number): void {
+            let timeSinceLastFrame: number = ƒ.Loop.timeFrameReal / 1000;
+            this.mtxLocal.translateX(timeSinceLastFrame * _movement);
+            this.setRectPosition();
+          }
     }
 }

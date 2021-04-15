@@ -2,27 +2,28 @@
 var SpaceInvaders;
 (function (SpaceInvaders) {
     var ƒ = FudgeCore;
-    SpaceInvaders.shipX = 0;
-    SpaceInvaders.shipY = 19;
-    class Mothership extends ƒ.Node {
-        constructor(_x, _y) {
-            super("Mothership");
-            this.addComponent(new ƒ.ComponentMaterial());
-            this.addComponent(new ƒ.ComponentTransform());
-            this.mtxLocal.translateX(SpaceInvaders.shipX);
-            this.mtxLocal.translateY(SpaceInvaders.shipY);
-            let mothershipMesh = new ƒ.MeshQuad("Mothership_Mesh");
-            let cmpMesh = new ƒ.ComponentMesh(mothershipMesh);
-            this.addComponent(cmpMesh);
-            let newTxt = new ƒ.TextureImage();
-            let newCoat = new ƒ.CoatTextured();
-            let newMtr = new ƒ.Material("Mothership_Material", ƒ.ShaderTexture, newCoat);
-            let oldComCoat = this.getComponent(ƒ.ComponentMaterial);
-            newTxt.load("mothership2.png");
-            newCoat.texture = newTxt;
-            oldComCoat.material = newMtr;
-            this.getComponent(ƒ.ComponentMesh).mtxPivot.scaleX(2);
-            this.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(1.2);
+    class Mothership extends SpaceInvaders.QuadNode {
+        /* static newTxt: ƒ.TextureImage = new ƒ.TextureImage();
+        static newCoat: ƒ.CoatTextured = new ƒ.CoatTextured();
+        static material: ƒ.Material = new ƒ.Material("Mothership_Material", ƒ.ShaderTexture, Mothership.newCoat); */
+        constructor() {
+            let pos = new ƒ.Vector2(0, 19);
+            let scale = new ƒ.Vector2(2, 1.2);
+            super("Mothership", pos, scale);
+            let texture = new ƒ.TextureImage("mothership2.png");
+            let material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), texture));
+            this.addComponent(new ƒ.ComponentMaterial(material));
+            /* let oldComCoat: ƒ.ComponentMaterial = this.getComponent(ƒ.ComponentMaterial);
+
+            Mothership.newTxt.load("mothership2.png");
+
+            Mothership.newCoat.texture = Mothership.newTxt;
+            oldComCoat.material = Mothership.material; */
+        }
+        static getInstance() {
+            if (this.instance == null)
+                this.instance = new Mothership();
+            return this.instance;
         }
     }
     SpaceInvaders.Mothership = Mothership;

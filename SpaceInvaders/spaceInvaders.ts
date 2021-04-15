@@ -1,28 +1,23 @@
 namespace SpaceInvaders {
     import ƒ = FudgeCore;
     window.addEventListener("load", init);
-    let gameNode: ƒ.Node = new ƒ.Node("Game");
-    let viewportNode: ƒ.Node = new ƒ.Node("Viewport");
-    let viewport: ƒ.Viewport = new ƒ.Viewport();
-    export let playerNode: ƒ.Node = new Player(playerX, playerY);
-    let motherShipNode: ƒ.Node = new Mothership(shipX, shipY);
-    let movementspeed: number = 15;
-    let leftBorder: number = -13;
-    let rightBorder: number = 13;
-    let laserNode: ƒ.Node = new ƒ.Node("LaserNode");
-    let bulletVisible: boolean = false;
+
     gameNode.appendChild(viewportNode);
-    /* let backGroundNode: ƒ.Node = new Background(backX, backY, backZ); */
-    
 
     function init(_event: Event): void {
 
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
-
-        viewportNode.addChild(playerNode);
-        viewportNode.addChild(motherShipNode);
+        player = Player.getInstance()
+        viewportNode.addChild(player);
+        mothership.addChild(Mothership.getInstance());
+        viewportNode.addChild(mothership);
         viewportNode.addChild(laserNode);
         /* viewportNode.addChild(backGroundNode); */
+        viewportNode.addChild(railNode);
+        viewportNode.addChild(projectiles);
+        viewportNode.addChild(invaders);
+
+        invaders.addComponent(new ƒ.ComponentTransform);
 
         let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(30);
@@ -32,11 +27,18 @@ namespace SpaceInvaders {
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
         console.log(gameNode);
 
-        for (let invaderCount: number = 1; invaderCount <= 55; invaderCount++) {
-            spawnInvader();
+        for (let row: number = 0; row < rowCount; ++row) {
+            for (let column: number = 0; column < columnCount; ++column) {
+                let pos: ƒ.Vector2 = new ƒ.Vector2();
+                pos.x = (column - (columnCount - 1) / 2) * 1.8;
+                pos.y = (row * 15 + 130) / 11;
+                invaders.addChild(new Invader(pos));
+            }
         }
         for (shieldNr; shieldNr <= 4; shieldNr++) {
-            spawnShield();
+            let shieldNode: ƒ.Node = new Shield(shieldX, shieldY);
+            viewportNode.addChild(shieldNode);
+            shieldX = shieldX + 6;
         }
         viewport.draw();
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
@@ -44,50 +46,93 @@ namespace SpaceInvaders {
     }
 
     function hndKey(): void {
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D]) && playerNode.mtxLocal.translation.x <= rightBorder) {
-            playerNode.mtxLocal.translateX((movementspeed * ƒ.Loop.timeFrameReal) / 1000);
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D]) && Player.getInstance().mtxLocal.translation.x <= rightBorder) {
+            player.moveRight();
         }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A]) && playerNode.mtxLocal.translation.x >= leftBorder) {
-            playerNode.mtxLocal.translateX((- movementspeed * ƒ.Loop.timeFrameReal) / 1000);
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A]) && Player.getInstance().mtxLocal.translation.x >= leftBorder) {
+            player.moveLeft();
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && bulletVisible == false) {
-            let projectileNode: ƒ.Node = new Projectile( playerNode.mtxLocal.translation.x,  playerNode.mtxLocal.translation.y);
-            laserNode.addChild(projectileNode);
+            let projectile: Projectile = new Projectile(player.mtxLocal.translation.toVector2());
+            projectiles.addChild(projectile);
             bulletVisible = true;
         }
     }
 
     function update(_event: Event): void {
         hndKey();
-        if (bulletVisible && noHit) {
-            laserNode.getChild(0).mtxLocal.translateY(+1);
+        setVelocity();
+        checkProjectileCollision();
+        if (!projectiles.getChild(0)) {
+            bulletVisible = false;
         }
-        if (laserNode.getChild(0)) {
-            if (laserNode.getChild(0).mtxLocal.translation.y > 21) {
-                laserNode.removeChild(laserNode.getChild(0));
-                bulletVisible = false;
+        for (let invader of invaders.getChildren() as Invader[]) {
+            switch (moveDirection) {
+                case true: {
+                    invader.move(velocity);
+                    if (invader.mtxLocal.translation.x > rightBorder) {
+                        moveDirection = false;
+                        collisionRight = true;
+                    }
+                    break;
+                }
+                default: {
+                    invader.move(-velocity);
+                    if (invader.mtxLocal.translation.x < leftBorder) {
+                        moveDirection = true;
+                        collisionLeft = true;
+                    }
+                    break;
+                }
             }
+        }
+        if (collisionRight || collisionLeft) {
+            invaders.mtxLocal.translateY(-0.5);
+            collisionRight = false;
+            collisionLeft = false;
         }
         viewport.draw();
     }
 
-    function spawnShield(): void {
-        let shieldNode: ƒ.Node = new Shield(shieldX, shieldY);
-        viewportNode.addChild(shieldNode);
-        shieldX = shieldX + 6;
+    function setVelocity(): void {
+        if (invaders.getChildren().length >= 35) {
+            velocity = 1;
+        } else if (invaders.getChildren().length >= 25) {
+            velocity = 2.5;
+        } else if (invaders.getChildren().length >= 15) {
+            velocity = 5;
+        } else if (invaders.getChildren().length >= 10) {
+            velocity = 8;
+        } else if (invaders.getChildren().length >= 6) {
+            velocity = 12;
+        } else if (invaders.getChildren().length >= 4) {
+            velocity = 15;
+        } else if (invaders.getChildren().length >= 2) {
+            velocity = 20;
+        } else if (invaders.getChildren().length >= 1) {
+            velocity = 30;
+        }
     }
 
-    function spawnInvader(): void {
-        let nodeCurrentSpaceInvader: ƒ.Node = new Invader();
-        if (rowCount == 10) {
-            spawnY = spawnY - 1.5;
-            rowCount = 0;
-            spawnX = -10;
-            viewportNode.addChild(nodeCurrentSpaceInvader);
-        } else {
-            rowCount += 1;
-            spawnX = spawnX + 2;
-            viewportNode.addChild(nodeCurrentSpaceInvader);
+    function checkProjectileCollision(): void {
+        for (let projectile of projectiles.getChildren() as Projectile[]) {
+            for (let invader of invaders.getChildren() as Invader[]) {
+                if (projectile.checkCollision(invader)) {
+                    projectiles.removeChild(projectile);
+                    invaders.removeChild(invader);
+                }
+            }
+            if (projectile.checkCollision(Mothership.getInstance())) {
+                projectiles.removeChild(projectile);
+                mothership.removeChild(Mothership.getInstance());
+            }
+        }
+        for (let projectile of projectiles.getChildren() as Projectile[]) {
+            projectile.move();
+            if (projectile.mtxLocal.translation.y > 20) {
+                projectiles.removeChild(projectile);
+                bulletVisible = false;
+            }
         }
     }
 }

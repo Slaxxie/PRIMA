@@ -2,23 +2,27 @@
 var SpaceInvaders;
 (function (SpaceInvaders) {
     var ƒ = FudgeCore;
-    SpaceInvaders.playerX = 0;
-    SpaceInvaders.playerY = 0;
-    class Player extends ƒ.Node {
-        constructor(_x, _y) {
-            super("Player");
-            this.addComponent(new ƒ.ComponentMaterial());
-            this.addComponent(new ƒ.ComponentTransform());
-            let playerMesh = new ƒ.MeshQuad("Player_Mesh");
-            let cmpMesh = new ƒ.ComponentMesh(playerMesh);
-            this.addComponent(cmpMesh);
-            let newTxt = new ƒ.TextureImage();
-            let newCoat = new ƒ.CoatTextured();
-            let newMtr = new ƒ.Material("Player_Material", ƒ.ShaderTexture, newCoat);
-            let oldComCoat = this.getComponent(ƒ.ComponentMaterial);
-            newTxt.load("player2.png");
-            newCoat.texture = newTxt;
-            oldComCoat.material = newMtr;
+    class Player extends SpaceInvaders.QuadNode {
+        constructor() {
+            let pos = new ƒ.Vector2(0, 0);
+            let scale = new ƒ.Vector2(1, 1);
+            super("Player", pos, scale);
+            let texture = new ƒ.TextureImage("player2.png");
+            let material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), texture));
+            this.addComponent(new ƒ.ComponentMaterial(material));
+        }
+        static getInstance() {
+            if (this.instance == null)
+                this.instance = new Player();
+            return this.instance;
+        }
+        moveRight() {
+            this.setRectPosition();
+            Player.getInstance().mtxLocal.translateX((SpaceInvaders.movementspeed * ƒ.Loop.timeFrameReal) / 1000);
+        }
+        moveLeft() {
+            this.setRectPosition();
+            Player.getInstance().mtxLocal.translateX((-SpaceInvaders.movementspeed * ƒ.Loop.timeFrameReal) / 1000);
         }
     }
     SpaceInvaders.Player = Player;

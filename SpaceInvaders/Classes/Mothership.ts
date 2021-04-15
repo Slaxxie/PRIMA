@@ -1,33 +1,29 @@
 namespace SpaceInvaders {
     import ƒ = FudgeCore;
-    export let shipX: number = 0;
-    export let shipY: number = 19;
-    export class Mothership extends ƒ.Node {
-        constructor(_x: number, _y: number) {
-            super("Mothership");
-            this.addComponent(new ƒ.ComponentMaterial()); 
+    export class Mothership extends QuadNode {
+        static instance: Mothership;
+        /* static newTxt: ƒ.TextureImage = new ƒ.TextureImage();
+        static newCoat: ƒ.CoatTextured = new ƒ.CoatTextured();
+        static material: ƒ.Material = new ƒ.Material("Mothership_Material", ƒ.ShaderTexture, Mothership.newCoat); */
 
-            this.addComponent(new ƒ.ComponentTransform());
-            this.mtxLocal.translateX(shipX);
-            this.mtxLocal.translateY(shipY);
-            
-            let mothershipMesh: ƒ.Mesh = new ƒ.MeshQuad("Mothership_Mesh");
-            
-            let cmpMesh: ƒ.ComponentMesh = new ƒ.ComponentMesh(mothershipMesh);
-            this.addComponent(cmpMesh);
-           
-            let newTxt: ƒ.TextureImage = new ƒ.TextureImage();
-            let newCoat: ƒ.CoatTextured = new ƒ.CoatTextured();
-            let newMtr: ƒ.Material = new ƒ.Material("Mothership_Material", ƒ.ShaderTexture, newCoat);
-            let oldComCoat: ƒ.ComponentMaterial = this.getComponent(ƒ.ComponentMaterial);
+        private constructor() {
+            let pos: ƒ.Vector2 = new ƒ.Vector2(0, 19);
+            let scale: ƒ.Vector2 = new ƒ.Vector2(2, 1.2);
+            super("Mothership", pos, scale);
 
-            newTxt.load("mothership2.png");
+            let texture: ƒ.TextureImage = new ƒ.TextureImage("mothership2.png");
+            let material: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), texture));
+            this.addComponent(new ƒ.ComponentMaterial(material));
+            /* let oldComCoat: ƒ.ComponentMaterial = this.getComponent(ƒ.ComponentMaterial);
 
-            newCoat.texture = newTxt;
-            oldComCoat.material = newMtr;
-            
-            this.getComponent(ƒ.ComponentMesh).mtxPivot.scaleX(2);
-            this.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(1.2);
-        } 
-    }      
+            Mothership.newTxt.load("mothership2.png");
+
+            Mothership.newCoat.texture = Mothership.newTxt;
+            oldComCoat.material = Mothership.material; */
+        }
+        static getInstance(): Mothership {
+            if (this.instance == null) this.instance = new Mothership();
+            return this.instance;
+        }
+    }
 }

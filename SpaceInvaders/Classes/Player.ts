@@ -1,28 +1,27 @@
 namespace SpaceInvaders {
     import ƒ = FudgeCore;
-    export let playerX: number = 0;
-    export let playerY: number = 0;
-    export class Player extends ƒ.Node {
-        constructor(_x: number, _y: number) {
-            super("Player");
-            this.addComponent(new ƒ.ComponentMaterial()); 
 
-            this.addComponent(new ƒ.ComponentTransform());
-            
-            let playerMesh: ƒ.Mesh = new ƒ.MeshQuad("Player_Mesh");
-            
-            let cmpMesh: ƒ.ComponentMesh = new ƒ.ComponentMesh(playerMesh);
-            this.addComponent(cmpMesh);
-           
-            let newTxt: ƒ.TextureImage = new ƒ.TextureImage();
-            let newCoat: ƒ.CoatTextured = new ƒ.CoatTextured();
-            let newMtr: ƒ.Material = new ƒ.Material("Player_Material", ƒ.ShaderTexture, newCoat);
-            let oldComCoat: ƒ.ComponentMaterial = this.getComponent(ƒ.ComponentMaterial);
-
-            newTxt.load("player2.png");
-
-            newCoat.texture = newTxt;
-            oldComCoat.material = newMtr;
-        } 
-    }      
+    export class Player extends QuadNode {
+        static instance: Player;
+        private constructor() {
+            let pos: ƒ.Vector2 = new ƒ.Vector2(0, 0);
+            let scale: ƒ.Vector2 = new ƒ.Vector2(1, 1);
+            super("Player", pos, scale);
+            let texture: ƒ.TextureImage = new ƒ.TextureImage("player2.png");
+            let material: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), texture));
+            this.addComponent(new ƒ.ComponentMaterial(material));
+        }
+        static getInstance(): Player {
+            if (this.instance == null) this.instance = new Player();
+            return this.instance;
+        }
+        public moveRight(): void {
+            this.setRectPosition();
+            Player.getInstance().mtxLocal.translateX((movementspeed * ƒ.Loop.timeFrameReal) / 1000);
+        }
+        public moveLeft(): void {
+            this.setRectPosition();
+            Player.getInstance().mtxLocal.translateX((- movementspeed * ƒ.Loop.timeFrameReal) / 1000);
+        }
+    }
 }

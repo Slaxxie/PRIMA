@@ -3,83 +3,134 @@ var SpaceInvaders;
 (function (SpaceInvaders) {
     var ƒ = FudgeCore;
     window.addEventListener("load", init);
-    let gameNode = new ƒ.Node("Game");
-    let viewportNode = new ƒ.Node("Viewport");
-    let viewport = new ƒ.Viewport();
-    SpaceInvaders.playerNode = new SpaceInvaders.Player(SpaceInvaders.playerX, SpaceInvaders.playerY);
-    let motherShipNode = new SpaceInvaders.Mothership(SpaceInvaders.shipX, SpaceInvaders.shipY);
-    let movementspeed = 15;
-    let leftBorder = -13;
-    let rightBorder = 13;
-    let laserNode = new ƒ.Node("LaserNode");
-    let bulletVisible = false;
-    gameNode.appendChild(viewportNode);
-    /* let backGroundNode: ƒ.Node = new Background(backX, backY, backZ); */
+    SpaceInvaders.gameNode.appendChild(SpaceInvaders.viewportNode);
     function init(_event) {
         const canvas = document.querySelector("canvas");
-        viewportNode.addChild(SpaceInvaders.playerNode);
-        viewportNode.addChild(motherShipNode);
-        viewportNode.addChild(laserNode);
+        SpaceInvaders.player = SpaceInvaders.Player.getInstance();
+        SpaceInvaders.viewportNode.addChild(SpaceInvaders.player);
+        SpaceInvaders.mothership.addChild(SpaceInvaders.Mothership.getInstance());
+        SpaceInvaders.viewportNode.addChild(SpaceInvaders.mothership);
+        SpaceInvaders.viewportNode.addChild(SpaceInvaders.laserNode);
         /* viewportNode.addChild(backGroundNode); */
+        SpaceInvaders.viewportNode.addChild(SpaceInvaders.railNode);
+        SpaceInvaders.viewportNode.addChild(SpaceInvaders.projectiles);
+        SpaceInvaders.viewportNode.addChild(SpaceInvaders.invaders);
+        SpaceInvaders.invaders.addComponent(new ƒ.ComponentTransform);
         let cmpCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(30);
         cmpCamera.mtxPivot.translateY(10);
         cmpCamera.mtxPivot.rotateY(180);
-        viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
-        console.log(gameNode);
-        for (let invaderCount = 1; invaderCount <= 55; invaderCount++) {
-            spawnInvader();
+        SpaceInvaders.viewport.initialize("Viewport", SpaceInvaders.viewportNode, cmpCamera, canvas);
+        console.log(SpaceInvaders.gameNode);
+        for (let row = 0; row < SpaceInvaders.rowCount; ++row) {
+            for (let column = 0; column < SpaceInvaders.columnCount; ++column) {
+                let pos = new ƒ.Vector2();
+                pos.x = (column - (SpaceInvaders.columnCount - 1) / 2) * 1.8;
+                pos.y = (row * 15 + 130) / 11;
+                SpaceInvaders.invaders.addChild(new SpaceInvaders.Invader(pos));
+            }
         }
         for (SpaceInvaders.shieldNr; SpaceInvaders.shieldNr <= 4; SpaceInvaders.shieldNr++) {
-            spawnShield();
+            let shieldNode = new SpaceInvaders.Shield(SpaceInvaders.shieldX, SpaceInvaders.shieldY);
+            SpaceInvaders.viewportNode.addChild(shieldNode);
+            SpaceInvaders.shieldX = SpaceInvaders.shieldX + 6;
         }
-        viewport.draw();
+        SpaceInvaders.viewport.draw();
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
     }
     function hndKey() {
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D]) && SpaceInvaders.playerNode.mtxLocal.translation.x <= rightBorder) {
-            SpaceInvaders.playerNode.mtxLocal.translateX((movementspeed * ƒ.Loop.timeFrameReal) / 1000);
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D]) && SpaceInvaders.Player.getInstance().mtxLocal.translation.x <= SpaceInvaders.rightBorder) {
+            SpaceInvaders.player.moveRight();
         }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A]) && SpaceInvaders.playerNode.mtxLocal.translation.x >= leftBorder) {
-            SpaceInvaders.playerNode.mtxLocal.translateX((-movementspeed * ƒ.Loop.timeFrameReal) / 1000);
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A]) && SpaceInvaders.Player.getInstance().mtxLocal.translation.x >= SpaceInvaders.leftBorder) {
+            SpaceInvaders.player.moveLeft();
         }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && bulletVisible == false) {
-            let projectileNode = new SpaceInvaders.Projectile(SpaceInvaders.playerNode.mtxLocal.translation.x, SpaceInvaders.playerNode.mtxLocal.translation.y);
-            laserNode.addChild(projectileNode);
-            bulletVisible = true;
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && SpaceInvaders.bulletVisible == false) {
+            let projectile = new SpaceInvaders.Projectile(SpaceInvaders.player.mtxLocal.translation.toVector2());
+            SpaceInvaders.projectiles.addChild(projectile);
+            SpaceInvaders.bulletVisible = true;
         }
     }
     function update(_event) {
         hndKey();
-        if (bulletVisible && SpaceInvaders.noHit) {
-            laserNode.getChild(0).mtxLocal.translateY(+1);
+        setVelocity();
+        checkProjectileCollision();
+        if (!SpaceInvaders.projectiles.getChild(0)) {
+            SpaceInvaders.bulletVisible = false;
         }
-        if (laserNode.getChild(0)) {
-            if (laserNode.getChild(0).mtxLocal.translation.y > 21) {
-                laserNode.removeChild(laserNode.getChild(0));
-                bulletVisible = false;
+        for (let invader of SpaceInvaders.invaders.getChildren()) {
+            switch (SpaceInvaders.moveDirection) {
+                case true: {
+                    invader.move(SpaceInvaders.velocity);
+                    if (invader.mtxLocal.translation.x > SpaceInvaders.rightBorder) {
+                        SpaceInvaders.moveDirection = false;
+                        SpaceInvaders.collisionRight = true;
+                    }
+                    break;
+                }
+                default: {
+                    invader.move(-SpaceInvaders.velocity);
+                    if (invader.mtxLocal.translation.x < SpaceInvaders.leftBorder) {
+                        SpaceInvaders.moveDirection = true;
+                        SpaceInvaders.collisionLeft = true;
+                    }
+                    break;
+                }
             }
         }
-        viewport.draw();
-    }
-    function spawnShield() {
-        let shieldNode = new SpaceInvaders.Shield(SpaceInvaders.shieldX, SpaceInvaders.shieldY);
-        viewportNode.addChild(shieldNode);
-        SpaceInvaders.shieldX = SpaceInvaders.shieldX + 6;
-    }
-    function spawnInvader() {
-        let nodeCurrentSpaceInvader = new SpaceInvaders.Invader();
-        if (SpaceInvaders.rowCount == 10) {
-            SpaceInvaders.spawnY = SpaceInvaders.spawnY - 1.5;
-            SpaceInvaders.rowCount = 0;
-            SpaceInvaders.spawnX = -10;
-            viewportNode.addChild(nodeCurrentSpaceInvader);
+        if (SpaceInvaders.collisionRight || SpaceInvaders.collisionLeft) {
+            SpaceInvaders.invaders.mtxLocal.translateY(-0.5);
+            SpaceInvaders.collisionRight = false;
+            SpaceInvaders.collisionLeft = false;
         }
-        else {
-            SpaceInvaders.rowCount += 1;
-            SpaceInvaders.spawnX = SpaceInvaders.spawnX + 2;
-            viewportNode.addChild(nodeCurrentSpaceInvader);
+        SpaceInvaders.viewport.draw();
+    }
+    function setVelocity() {
+        if (SpaceInvaders.invaders.getChildren().length >= 35) {
+            SpaceInvaders.velocity = 1;
+        }
+        else if (SpaceInvaders.invaders.getChildren().length >= 25) {
+            SpaceInvaders.velocity = 2.5;
+        }
+        else if (SpaceInvaders.invaders.getChildren().length >= 15) {
+            SpaceInvaders.velocity = 5;
+        }
+        else if (SpaceInvaders.invaders.getChildren().length >= 10) {
+            SpaceInvaders.velocity = 8;
+        }
+        else if (SpaceInvaders.invaders.getChildren().length >= 6) {
+            SpaceInvaders.velocity = 12;
+        }
+        else if (SpaceInvaders.invaders.getChildren().length >= 4) {
+            SpaceInvaders.velocity = 15;
+        }
+        else if (SpaceInvaders.invaders.getChildren().length >= 2) {
+            SpaceInvaders.velocity = 20;
+        }
+        else if (SpaceInvaders.invaders.getChildren().length >= 1) {
+            SpaceInvaders.velocity = 30;
+        }
+    }
+    function checkProjectileCollision() {
+        for (let projectile of SpaceInvaders.projectiles.getChildren()) {
+            for (let invader of SpaceInvaders.invaders.getChildren()) {
+                if (projectile.checkCollision(invader)) {
+                    SpaceInvaders.projectiles.removeChild(projectile);
+                    SpaceInvaders.invaders.removeChild(invader);
+                }
+            }
+            if (projectile.checkCollision(SpaceInvaders.Mothership.getInstance())) {
+                SpaceInvaders.projectiles.removeChild(projectile);
+                SpaceInvaders.mothership.removeChild(SpaceInvaders.Mothership.getInstance());
+            }
+        }
+        for (let projectile of SpaceInvaders.projectiles.getChildren()) {
+            projectile.move();
+            if (projectile.mtxLocal.translation.y > 20) {
+                SpaceInvaders.projectiles.removeChild(projectile);
+                SpaceInvaders.bulletVisible = false;
+            }
         }
     }
 })(SpaceInvaders || (SpaceInvaders = {}));
