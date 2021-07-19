@@ -7,12 +7,12 @@ namespace SpaceInvaders {
     function init(_event: Event): void {
 
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
-        player = Player.getInstance()
+        player = Player.getInstance();
         viewportNode.addChild(player);
         mothership.addChild(Mothership.getInstance());
         viewportNode.addChild(mothership);
         viewportNode.addChild(laserNode);
-        /* viewportNode.addChild(backGroundNode); */
+        viewportNode.addChild(backGroundNode);
         viewportNode.addChild(railNode);
         viewportNode.addChild(projectiles);
         viewportNode.addChild(invaders);

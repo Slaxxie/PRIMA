@@ -14,6 +14,7 @@ var SpaceInvaders;
     SpaceInvaders.invaders = new ƒ.Node("Invaders");
     /* let shields: ƒ.Node = new ƒ.Node("Shields"); */
     SpaceInvaders.mothership = new ƒ.Node("Mothership");
+    SpaceInvaders.backGroundNode = new ƒ.Node("Motherssdsfsdfhip");
     SpaceInvaders.railNode = new SpaceInvaders.Rail(SpaceInvaders.railX, SpaceInvaders.railY, SpaceInvaders.railZ);
     SpaceInvaders.movementspeed = 15;
     SpaceInvaders.leftBorder = -13.5;

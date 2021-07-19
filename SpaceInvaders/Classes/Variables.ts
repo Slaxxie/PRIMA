@@ -15,6 +15,7 @@ namespace SpaceInvaders {
     export let invaders: ƒ.Node = new ƒ.Node("Invaders");
     /* let shields: ƒ.Node = new ƒ.Node("Shields"); */
     export let mothership: ƒ.Node = new ƒ.Node("Mothership");
+    export let backGroundNode: ƒ.Node = new ƒ.Node("Motherssdsfsdfhip");
     export let player: Player;
     export let railNode: ƒ.Node = new Rail(railX, railY, railZ);
     

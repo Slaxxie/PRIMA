@@ -11,7 +11,7 @@ var SpaceInvaders;
         SpaceInvaders.mothership.addChild(SpaceInvaders.Mothership.getInstance());
         SpaceInvaders.viewportNode.addChild(SpaceInvaders.mothership);
         SpaceInvaders.viewportNode.addChild(SpaceInvaders.laserNode);
-        /* viewportNode.addChild(backGroundNode); */
+        SpaceInvaders.viewportNode.addChild(SpaceInvaders.backGroundNode);
         SpaceInvaders.viewportNode.addChild(SpaceInvaders.railNode);
         SpaceInvaders.viewportNode.addChild(SpaceInvaders.projectiles);
         SpaceInvaders.viewportNode.addChild(SpaceInvaders.invaders);
