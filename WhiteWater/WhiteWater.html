@@ -23,25 +23,53 @@
     <script src='./Classes/ScrollingBackground.js'></script>
     <script src='WhiteWater.js'></script>
 
-    
+
 </head>
 
 <body>
     <canvas width="800" height="600" id="game_canvas"></canvas>
-    <div class ="hidden" id="mainMenu">
-        <img src="mainMenuBackground800600.png" id="mainMenu">
+    <div class="hidden" id="mainMenu">
+        <img src="mainMenuBackground800600.png">
         <button id="start"></button>
         <button id="option"></button>
         <button id="highscore"></button>
     </div>
-    <div class="hidden" id="pauseMenu">
-        <button id="continue">Weiter</button>
-        <button id="option2">Optionen</button>
-        <button id="exit2">Exit</button>
-    </div>
+
     <div class="hidden" id="optionMenu">
-        <button id="back">Zurück</button>
+        <img src="menuback2.png">
+        <button id="minus1">-</button>
+        <input id="range1" type="range" step="10" value="50">
+        <button id="plus1">+</button>
+        <output for="range1" id="output">50</output>
+        <button id="backMain"></button>
+
     </div>
+
+    <div class="hidden" id="highscoreMenu">
+        <div class="table">
+            <table id="highscoreTable">
+            </table>
+        </div>
+        <button id="backMainFromHS"></button>
+
+    </div>
+
+    <div class="hidden" id="pauseMenu">
+        <button id="continue"></button>
+        <button id="option2"></button>
+        <button id="exit2"></button>
+    </div>
+
+    <div class="hidden" id="optionMenuInGame">
+        <div class="container">
+            <button id="minus2">-</button>
+            <input id="range2" type="range" step="10" value="50">
+            <button id="plus2">+</button>
+            <output for="range" id="output2">50</output>
+            <button id="back"></button>
+        </div>
+    </div>
+
 </body>
 
 </html>

@@ -49,7 +49,7 @@ var WhiteWater;
         });
         document.getElementById("option2").addEventListener("click", () => {
             document.getElementById("pauseMenu").style.display = "none";
-            WhiteWater.optionMenu();
+            WhiteWater.optionMenuInGame();
         });
         document.getElementById("exit2").addEventListener("click", () => {
             document.getElementById("pauseMenu").style.display = "none";
@@ -60,13 +60,16 @@ var WhiteWater;
             gameStart();
         }); */
         document.getElementById("back").addEventListener("click", () => {
+            document.getElementById("optionMenuInGame").style.display = "none";
+            WhiteWater.pauseGame();
+        });
+        document.getElementById("backMain").addEventListener("click", () => {
             document.getElementById("optionMenu").style.display = "none";
-            if (WhiteWater.gamestateTemp == WhiteWater.GAMESTATE.PLAYING) {
-                WhiteWater.pauseGame();
-            }
-            else {
-                WhiteWater.mainMenu();
-            }
+            WhiteWater.mainMenu();
+        });
+        document.getElementById("backMainFromHS").addEventListener("click", () => {
+            document.getElementById("highscoreMenu").style.display = "none";
+            WhiteWater.mainMenu();
         });
         WhiteWater.mainMenu();
     }

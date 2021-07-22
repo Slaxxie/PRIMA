@@ -60,7 +60,7 @@ namespace WhiteWater {
     }
 
     function increaseMovementSpeed(): void {
-        movementSpeed ++;
+        movementSpeed++;
     }
     function heal(): void {
         currentLives = maxLives;
@@ -132,7 +132,12 @@ namespace WhiteWater {
         gamestate = GAMESTATE.OPTIONS;
         console.log(gamestate);
         document.getElementById("optionMenu").style.display = "inline";
+    }
 
+    export function optionMenuInGame(): void {
+        gamestate = GAMESTATE.OPTIONS;
+        console.log(gamestate);
+        document.getElementById("optionMenuInGame").style.display = "inline";
     }
 
     export function resumeGame(): void {
@@ -146,25 +151,37 @@ namespace WhiteWater {
 
     export function highScore(): void {
         gamestate = GAMESTATE.HIGHSCORE;
+        document.getElementById("highscoreMenu").style.display = "inline";
         console.log(gamestate);
         topTen();
-        /* let i: number = 0;
-        let userName: string[] = [];
-        let userScore: number[] = [];
-        while (true) {
-            let score: string = localStorage.getItem(i.toString());
-            if (score) {
-                // tslint:disable-next-line: no-any
-                let scoreObj: any = JSON.parse(score);
-
-                userName.push(scoreObj.name);
-                userScore.push(parseInt(scoreObj.points));
-            } else {
-                mainMenu();
-                break;
-            }
-            i++;
-        } */
+        console.log(highScoreArray);
+        let highScoreTable: HTMLElement = document.getElementById("highscoreTable");
+        highScoreTable.innerHTML = "";
+        let tableHeader: HTMLElement = document.createElement("tr");
+        let tablePlace: HTMLElement = document.createElement("th");
+        tablePlace.textContent = "Place";
+        tableHeader.appendChild(tablePlace);
+        let tableName: HTMLElement = document.createElement("th");
+        tableName.textContent = "Name";
+        tableHeader.appendChild(tableName);
+        let tableScore: HTMLElement = document.createElement("th");
+        tableScore.textContent = "Score";
+        tableHeader.appendChild(tableScore);
+        highScoreTable.appendChild(tableHeader);
+        for (let i: number = 0; i < highScoreArray.length; i++) {
+            let tr: HTMLElement = document.createElement("tr");
+            let currentPlace: HTMLElement = document.createElement("td");
+            currentPlace.textContent = String(i + 1);
+            tr.appendChild(currentPlace);
+            let currentName: HTMLElement = document.createElement("td");
+            currentName.textContent = highScoreArray[i].name;
+            tr.appendChild(currentName);
+            let currentScore: HTMLElement = document.createElement("td");
+            currentScore.textContent = String(highScoreArray[i].points);
+            tr.appendChild(currentScore);
+            highScoreTable.appendChild(tr);
+        }
+        console.log(highScoreTable);
     }
 
 
@@ -198,7 +215,7 @@ namespace WhiteWater {
     }
     function topTen(): void {
         let i: number = 0;
-        let highScoreArray: { name: string, points: number }[] = [];
+
 
         while (true) {
             let score: string = localStorage.getItem(i.toString());
@@ -228,7 +245,9 @@ namespace WhiteWater {
         }
         highScoreArray = highScoreArray.sort(compare);
         highScoreArray = highScoreArray.slice(0, 10);
-        console.log(highScoreArray);
+        //console.log(highScoreArray);
+        //forschleife zum auslesen
+
 
         /* console.log(highScoreArray); */
         //

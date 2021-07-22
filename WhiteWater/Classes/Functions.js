@@ -132,6 +132,12 @@ var WhiteWater;
         document.getElementById("optionMenu").style.display = "inline";
     }
     WhiteWater.optionMenu = optionMenu;
+    function optionMenuInGame() {
+        WhiteWater.gamestate = WhiteWater.GAMESTATE.OPTIONS;
+        console.log(WhiteWater.gamestate);
+        document.getElementById("optionMenuInGame").style.display = "inline";
+    }
+    WhiteWater.optionMenuInGame = optionMenuInGame;
     function resumeGame() {
         WhiteWater.gamestate = WhiteWater.GAMESTATE.PLAYING;
         WhiteWater.sfxPlayer.cmpAudioSoundtrack.volume = 0.3;
@@ -142,25 +148,37 @@ var WhiteWater;
     WhiteWater.resumeGame = resumeGame;
     function highScore() {
         WhiteWater.gamestate = WhiteWater.GAMESTATE.HIGHSCORE;
+        document.getElementById("highscoreMenu").style.display = "inline";
         console.log(WhiteWater.gamestate);
         topTen();
-        /* let i: number = 0;
-        let userName: string[] = [];
-        let userScore: number[] = [];
-        while (true) {
-            let score: string = localStorage.getItem(i.toString());
-            if (score) {
-                // tslint:disable-next-line: no-any
-                let scoreObj: any = JSON.parse(score);
-
-                userName.push(scoreObj.name);
-                userScore.push(parseInt(scoreObj.points));
-            } else {
-                mainMenu();
-                break;
-            }
-            i++;
-        } */
+        console.log(WhiteWater.highScoreArray);
+        let highScoreTable = document.getElementById("highscoreTable");
+        highScoreTable.innerHTML = "";
+        let tableHeader = document.createElement("tr");
+        let tablePlace = document.createElement("th");
+        tablePlace.textContent = "Place";
+        tableHeader.appendChild(tablePlace);
+        let tableName = document.createElement("th");
+        tableName.textContent = "Name";
+        tableHeader.appendChild(tableName);
+        let tableScore = document.createElement("th");
+        tableScore.textContent = "Score";
+        tableHeader.appendChild(tableScore);
+        highScoreTable.appendChild(tableHeader);
+        for (let i = 0; i < WhiteWater.highScoreArray.length; i++) {
+            let tr = document.createElement("tr");
+            let currentPlace = document.createElement("td");
+            currentPlace.textContent = String(i + 1);
+            tr.appendChild(currentPlace);
+            let currentName = document.createElement("td");
+            currentName.textContent = WhiteWater.highScoreArray[i].name;
+            tr.appendChild(currentName);
+            let currentScore = document.createElement("td");
+            currentScore.textContent = String(WhiteWater.highScoreArray[i].points);
+            tr.appendChild(currentScore);
+            highScoreTable.appendChild(tr);
+        }
+        console.log(highScoreTable);
     }
     WhiteWater.highScore = highScore;
     function gameOverMenu() {
@@ -194,12 +212,11 @@ var WhiteWater;
     WhiteWater.gameOverMenu = gameOverMenu;
     function topTen() {
         let i = 0;
-        let highScoreArray = [];
         while (true) {
             let score = localStorage.getItem(i.toString());
             if (score) {
                 let scoreObj = JSON.parse(score);
-                highScoreArray.push(scoreObj);
+                WhiteWater.highScoreArray.push(scoreObj);
             }
             else {
                 break;
@@ -221,9 +238,10 @@ var WhiteWater;
             }
             return comparison;
         }
-        highScoreArray = highScoreArray.sort(compare);
-        highScoreArray = highScoreArray.slice(0, 10);
-        console.log(highScoreArray);
+        WhiteWater.highScoreArray = WhiteWater.highScoreArray.sort(compare);
+        WhiteWater.highScoreArray = WhiteWater.highScoreArray.slice(0, 10);
+        //console.log(highScoreArray);
+        //forschleife zum auslesen
         /* console.log(highScoreArray); */
         //
     }

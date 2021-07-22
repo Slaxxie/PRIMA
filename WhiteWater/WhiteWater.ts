@@ -51,7 +51,7 @@ namespace WhiteWater {
         });
         document.getElementById("option2").addEventListener("click", () => {
             document.getElementById("pauseMenu").style.display = "none";
-            optionMenu();
+            optionMenuInGame();
         });
         document.getElementById("exit2").addEventListener("click", () => {
             document.getElementById("pauseMenu").style.display = "none";
@@ -62,12 +62,16 @@ namespace WhiteWater {
             gameStart();
         }); */
         document.getElementById("back").addEventListener("click", () => {
+            document.getElementById("optionMenuInGame").style.display = "none";
+            pauseGame();   
+        });
+        document.getElementById("backMain").addEventListener("click", () => {
             document.getElementById("optionMenu").style.display = "none";
-            if (gamestateTemp == GAMESTATE.PLAYING) {
-                pauseGame();
-            } else {
-                mainMenu();
-            }
+            mainMenu();   
+        });
+        document.getElementById("backMainFromHS").addEventListener("click", () => {
+            document.getElementById("highscoreMenu").style.display = "none";
+            mainMenu();   
         });
 
         mainMenu();

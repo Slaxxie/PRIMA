@@ -32,6 +32,7 @@ var WhiteWater;
     WhiteWater.backGroundVelocityMod = 2;
     WhiteWater.backGroundVelocity = (WhiteWater.level / 5) + WhiteWater.backGroundVelocityMod;
     WhiteWater.sfxPlayer = new WhiteWater.SFX();
+    WhiteWater.highScoreArray = [];
     /* let backGroundNode: ƒ.Node = new Background(backX, backY, backZ); */
 })(WhiteWater || (WhiteWater = {}));
 //# sourceMappingURL=Variables.js.map
