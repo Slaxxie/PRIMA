@@ -1,0 +1,56 @@
+.hidden {
+    display:none;
+}
+#game_canvas {
+    position: relative;
+    align-content: center;
+}
+
+#mainMenu {
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    top: 10px;
+}
+#start {
+background-image: url("./buttonStart.png");
+border: none;
+background-color: transparent; 
+top: 200px; 
+left: 22px; 
+position: absolute; 
+width: 200px; height: 50px; 
+background-size: contain; 
+background-repeat: no-repeat;
+}
+#start:hover {
+    left: 37px;
+}
+#option {
+        background-image: url("./buttonOptions.png");
+        border: none;
+        background-color: transparent; 
+        top: 270px; 
+        left: 22px; 
+        position: absolute; 
+        width: 200px; height: 50px; 
+        background-size: contain; 
+        background-repeat: no-repeat;
+}
+#option:hover {
+    left: 37px;
+}
+#highscore {
+    background-image: url("./buttonHighscore.png");
+    border: none;
+    background-color: transparent; 
+    top: 340px; 
+    left: 22px; 
+    position: absolute; 
+    width: 200px; height: 50px; 
+    background-size: contain; 
+    background-repeat: no-repeat;
+}
+#highscore:hover {
+    left: 37px;
+}
