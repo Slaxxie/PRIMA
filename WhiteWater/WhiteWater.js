@@ -29,6 +29,12 @@ var WhiteWater;
         console.log(WhiteWater.gameNode);
         document.getElementById("start").addEventListener("click", () => {
             document.getElementById("mainMenu").style.display = "none";
+            document.getElementById("UI-Level").style.display = "inline";
+            document.getElementById("UI-Points").style.display = "inline";
+            document.getElementById("UI-MaxLives").style.display = "inline";
+            document.getElementById("UI-CurrentLives").style.display = "inline";
+            document.getElementById("UI-Shield").style.display = "inline";
+            document.getElementById("UI-Timewarp").style.display = "inline";
             gameStart();
         });
         document.getElementById("option").addEventListener("click", () => {
@@ -71,6 +77,8 @@ var WhiteWater;
             document.getElementById("highscoreMenu").style.display = "none";
             WhiteWater.mainMenu();
         });
+        document.getElementById("MasterVolume").addEventListener("input", WhiteWater.changeMasterVolume);
+        document.getElementById("MasterVolumeMainMenu").addEventListener("input", WhiteWater.changeMasterVolume);
         WhiteWater.mainMenu();
     }
     function hndKey() {
@@ -88,6 +96,7 @@ var WhiteWater;
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && WhiteWater.deflectorShieldAvailable == true && WhiteWater.gamestate == WhiteWater.GAMESTATE.PLAYING) {
             WhiteWater.deflectorShieldAvailable = false;
+            WhiteWater.shieldCDToHTML("ACTIVE");
             WhiteWater.deflectorShieldCooldown = 0;
             WhiteWater.invulnerableActive = true;
             WhiteWater.invulnerable = 0;
@@ -101,32 +110,29 @@ var WhiteWater;
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ESC]) && WhiteWater.gamestate == WhiteWater.GAMESTATE.PLAYING) {
             WhiteWater.pauseGame();
-            //optionMenu();
         }
     }
     function update(_event) {
         hndKey();
         WhiteWater.checkCollision();
-        //gameOver();
         WhiteWater.spawnCounter++;
-        //deflectorShieldCooldown++;
-        //invulnerable++;
-        //timeWarp++;
-        if (WhiteWater.deflectorShieldCooldown >= WhiteWater.deflectorShieldCooldownMax) {
-            if (WhiteWater.deflectorShieldAvailable == false) {
-                WhiteWater.sfxPlayer.playSFX(WhiteWater.SFXs.shieldReloadedSound);
-            }
-            WhiteWater.deflectorShieldAvailable = true;
-        }
-        else {
-            WhiteWater.deflectorShieldCooldown++;
-        }
         if (WhiteWater.invulnerable == WhiteWater.invulnerableEnd) {
             WhiteWater.invulnerableActive = false;
+            WhiteWater.shieldCDToHTML("RECHARGING");
             WhiteWater.deflectorNode.removeAllChildren();
         }
         else {
             WhiteWater.invulnerable++;
+        }
+        if (WhiteWater.deflectorShieldCooldown >= WhiteWater.deflectorShieldCooldownMax) {
+            if (WhiteWater.deflectorShieldAvailable == false) {
+                WhiteWater.sfxPlayer.playSFX(WhiteWater.SFXs.shieldReloadedSound);
+            }
+            WhiteWater.shieldCDToHTML("AVAILABLE");
+            WhiteWater.deflectorShieldAvailable = true;
+        }
+        else {
+            WhiteWater.deflectorShieldCooldown++;
         }
         if (WhiteWater.timeWarp == WhiteWater.timeWarpEnd) {
             WhiteWater.timeWarpActive = false;

@@ -65,6 +65,7 @@ namespace WhiteWater {
     export let backGroundStateTemp: number;
     export let sfxPlayer: SFX = new SFX();
     export let highScoreArray: { name: string, points: number }[] = [];
+    
     /* let backGroundNode: ƒ.Node = new Background(backX, backY, backZ); */
 
 }

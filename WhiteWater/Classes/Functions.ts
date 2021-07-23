@@ -74,6 +74,7 @@ namespace WhiteWater {
     function getTimeWarp(): void {
         if (timeWarpCharges < 3) {
             timeWarpCharges++;
+            timewarpToHTML(timeWarpCharges);
         }
     }
     export function checkCollision(): void {
@@ -83,6 +84,7 @@ namespace WhiteWater {
                     sfxPlayer.playSFX(SFXs.hitSound);
                     rocks.removeChild(rock);
                     currentLives = currentLives - rock.damageOfContact;
+                    currentLivesToHTML(currentLives);
                     gameOver();
                     console.log("CR:" + currentLives);
                 }
@@ -93,12 +95,40 @@ namespace WhiteWater {
                 lootables.removeChild(loot);
                 sfxPlayer.playSFX(SFXs.lootingSound);
                 playerPoints = playerPoints + loot.worthOfLoot;
+                pointsToHTML(playerPoints);
                 levelProgress = levelProgress + loot.worthOfLoot;
                 levelUp();
+                maxLivesToHTML(maxLives);
+                currentLivesToHTML(currentLives);
+                levelToHTML(level);
                 console.log("Player Points: " + playerPoints);
                 console.log("Level progress: " + levelProgress);
             }
         }
+    }
+    function pointsToHTML(points: number): void {
+        let div: HTMLElement = document.getElementById("UI-Points");
+        div.textContent = String(points);
+    }
+    function levelToHTML(levels: number): void {
+        let div: HTMLElement = document.getElementById("UI-Level");
+        div.textContent = String(levels);
+    }
+    export function timewarpToHTML(timewarp: number): void {
+        let div: HTMLElement = document.getElementById("UI-Timewarp");
+        div.textContent = "CHARGES: " + String(timewarp);
+    }
+    export function shieldCDToHTML(shieldstatus: string): void {
+        let div: HTMLElement = document.getElementById("UI-Shield");
+        div.textContent = shieldstatus;
+    }
+    function currentLivesToHTML(currentlives: number): void {
+        let div: HTMLElement = document.getElementById("UI-CurrentLives");
+        div.textContent = String(currentlives);
+    }
+    function maxLivesToHTML(maxlives: number): void {
+        let div: HTMLElement = document.getElementById("UI-MaxLives");
+        div.textContent = String(maxlives);
     }
 
     export function gameOver(): void {
@@ -287,6 +317,12 @@ namespace WhiteWater {
                 break;
             }
         }
+    }
+    export function changeMasterVolume(_event: Event): void {
+        let slider: HTMLInputElement = <HTMLInputElement>_event.target;
+        masterVolume = parseInt(slider.value) / 100;
+        ƒ.AudioManager.default.volume = masterVolume;
+        ƒ.AudioManager.default.gain.gain.value = masterVolume;
     }
 
     export async function loadGameValues(): Promise<void> {

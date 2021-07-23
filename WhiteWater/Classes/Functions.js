@@ -74,6 +74,7 @@ var WhiteWater;
     function getTimeWarp() {
         if (WhiteWater.timeWarpCharges < 3) {
             WhiteWater.timeWarpCharges++;
+            timewarpToHTML(WhiteWater.timeWarpCharges);
         }
     }
     function checkCollision() {
@@ -83,6 +84,7 @@ var WhiteWater;
                     WhiteWater.sfxPlayer.playSFX(WhiteWater.SFXs.hitSound);
                     WhiteWater.rocks.removeChild(rock);
                     WhiteWater.currentLives = WhiteWater.currentLives - rock.damageOfContact;
+                    currentLivesToHTML(WhiteWater.currentLives);
                     gameOver();
                     console.log("CR:" + WhiteWater.currentLives);
                 }
@@ -93,14 +95,44 @@ var WhiteWater;
                 WhiteWater.lootables.removeChild(loot);
                 WhiteWater.sfxPlayer.playSFX(WhiteWater.SFXs.lootingSound);
                 WhiteWater.playerPoints = WhiteWater.playerPoints + loot.worthOfLoot;
+                pointsToHTML(WhiteWater.playerPoints);
                 WhiteWater.levelProgress = WhiteWater.levelProgress + loot.worthOfLoot;
                 levelUp();
+                maxLivesToHTML(WhiteWater.maxLives);
+                currentLivesToHTML(WhiteWater.currentLives);
+                levelToHTML(WhiteWater.level);
                 console.log("Player Points: " + WhiteWater.playerPoints);
                 console.log("Level progress: " + WhiteWater.levelProgress);
             }
         }
     }
     WhiteWater.checkCollision = checkCollision;
+    function pointsToHTML(points) {
+        let div = document.getElementById("UI-Points");
+        div.textContent = String(points);
+    }
+    function levelToHTML(levels) {
+        let div = document.getElementById("UI-Level");
+        div.textContent = String(levels);
+    }
+    function timewarpToHTML(timewarp) {
+        let div = document.getElementById("UI-Timewarp");
+        div.textContent = "CHARGES: " + String(timewarp);
+    }
+    WhiteWater.timewarpToHTML = timewarpToHTML;
+    function shieldCDToHTML(shieldstatus) {
+        let div = document.getElementById("UI-Shield");
+        div.textContent = shieldstatus;
+    }
+    WhiteWater.shieldCDToHTML = shieldCDToHTML;
+    function currentLivesToHTML(currentlives) {
+        let div = document.getElementById("UI-CurrentLives");
+        div.textContent = String(currentlives);
+    }
+    function maxLivesToHTML(maxlives) {
+        let div = document.getElementById("UI-MaxLives");
+        div.textContent = String(maxlives);
+    }
     function gameOver() {
         if (WhiteWater.currentLives <= 0) {
             WhiteWater.sfxPlayer.playSFX(WhiteWater.SFXs.gameOverSound);
@@ -281,6 +313,13 @@ var WhiteWater;
         }
     }
     WhiteWater.modifySpawn = modifySpawn;
+    function changeMasterVolume(_event) {
+        let slider = _event.target;
+        WhiteWater.masterVolume = parseInt(slider.value) / 100;
+        ƒ.AudioManager.default.volume = WhiteWater.masterVolume;
+        ƒ.AudioManager.default.gain.gain.value = WhiteWater.masterVolume;
+    }
+    WhiteWater.changeMasterVolume = changeMasterVolume;
     async function loadGameValues() {
         WhiteWater.gameValueObject = await (await fetch("GameOptions.json")).json();
         WhiteWater.gameValueObject = WhiteWater.gameValueObject.gameValueObject;

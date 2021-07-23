@@ -2,6 +2,15 @@
     display: none;
 }
 
+.interface {
+    display: none;
+    z-index: 50;
+    position: absolute;
+    color: orange;
+    left: 30px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
 #game_canvas {
     width: 800px;
     height: 600px;
@@ -247,7 +256,7 @@ input[type=range] {
     position: absolute;
     background-size: contain;
     background-repeat: no-repeat;
-    font-family: arial, sans-serif;
+    font-family: 'Courier New', Courier, monospace;
     border-collapse: collapse;
     width: 25%;
     color: aliceblue;
@@ -281,10 +290,74 @@ button {
     margin: 0 10px;
 }
 
-#minus1 {}
+#UI-Level {
+    left: 665px;
+    top: 110px;
+    width: 50px;
+    text-align: right;
+}
 
-#plus1 {}
+#UI-Points {
+    left: 734px;
+    top: 171px;
+    width: 50px;
+    text-align: right;
+}
 
-#minus2 {}
+#UI-Timewarp {
+    left: 38px;
+    top: 516px;
+    text-align: left;
+}
 
-#plus2 {}
+#UI-Shield {
+    left: 38px;
+    top: 434px;
+    text-align: left;
+}
+
+#UI-CurrentLives {
+    left: 110px;
+    top: 274px;
+    text-align: right;
+}
+
+#UI-MaxLives {
+    left: 110px;
+    top: 324px;
+    text-align: right;
+}
+
+#MasterVolumeMainMenu {
+    position: absolute;
+    z-index: 50;
+    top: 250px;
+    left: 280px;
+}
+
+#MasterVolumeMainMenuTag {
+    position: absolute;
+    z-index: 50;
+    top: 220px;
+    left: 335px;
+    color: aliceblue;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+}
+
+#MasterVolume {
+    position: absolute;
+    z-index: 50;
+    top: 130px;
+    left: 30px;
+}
+
+#MasterVolumeTag {
+    position: absolute;
+    z-index: 50;
+    top: 100px;
+    left: 85px;
+    color: aliceblue;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+}

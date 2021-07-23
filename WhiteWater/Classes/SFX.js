@@ -12,44 +12,45 @@ var WhiteWater;
         SFXs[SFXs["timewarpActiveSound"] = 5] = "timewarpActiveSound";
         SFXs[SFXs["hitSound"] = 6] = "hitSound";
     })(SFXs = WhiteWater.SFXs || (WhiteWater.SFXs = {}));
+    WhiteWater.masterVolume = 1;
     class SFX {
         constructor() {
             this.audioExplosion = new ƒ.Audio("./sounds/explosion.wav");
             this.cmpAudioExplosion = new ƒ.ComponentAudio(this.audioExplosion, false, false);
             this.cmpAudioExplosion.connect(true);
-            this.cmpAudioExplosion.volume = 0.5;
+            this.cmpAudioExplosion.volume = 1 * WhiteWater.masterVolume;
             this.audioGameStart = new ƒ.Audio("./sounds/game_start.wav");
             this.cmpAudioGameStart = new ƒ.ComponentAudio(this.audioGameStart, false, false);
             this.cmpAudioGameStart.connect(true);
-            this.cmpAudioGameStart.volume = 0.5;
+            this.cmpAudioGameStart.volume = 1 * WhiteWater.masterVolume;
             this.audioLooting = new ƒ.Audio("./sounds/looting.wav");
             this.cmpAudioLooting = new ƒ.ComponentAudio(this.audioLooting, false, false);
             this.cmpAudioLooting.connect(true);
-            this.cmpAudioLooting.volume = 0.5;
+            this.cmpAudioLooting.volume = 1 * WhiteWater.masterVolume;
             this.audioLvlUp = new ƒ.Audio("./sounds/lvl_up.wav");
             this.cmpAudioLvlUp = new ƒ.ComponentAudio(this.audioLvlUp, false, false);
             this.cmpAudioLvlUp.connect(true);
-            this.cmpAudioLvlUp.volume = 0.5;
+            this.cmpAudioLvlUp.volume = 1 * WhiteWater.masterVolume;
             this.audioMainMenu = new ƒ.Audio("./sounds/main_menu.wav");
             this.cmpAudioMainMenu = new ƒ.ComponentAudio(this.audioMainMenu, false, false);
             this.cmpAudioMainMenu.connect(true);
-            this.cmpAudioMainMenu.volume = 0.3;
+            this.cmpAudioMainMenu.volume = 0.6 * WhiteWater.masterVolume;
             this.audioShieldReload = new ƒ.Audio("./sounds/shield_reload.wav");
             this.cmpAudioShieldReload = new ƒ.ComponentAudio(this.audioShieldReload, false, false);
             this.cmpAudioShieldReload.connect(true);
-            this.cmpAudioShieldReload.volume = 0.5;
+            this.cmpAudioShieldReload.volume = 1 * WhiteWater.masterVolume;
             this.audioTimewarpActive = new ƒ.Audio("./sounds/timewarp_active.wav");
             this.cmpAudioTimewarpActive = new ƒ.ComponentAudio(this.audioTimewarpActive, false, false);
             this.cmpAudioTimewarpActive.connect(true);
-            this.cmpAudioTimewarpActive.volume = 0.5;
+            this.cmpAudioTimewarpActive.volume = 1 * WhiteWater.masterVolume;
             this.audioSoundtrack = new ƒ.Audio("./sounds/soundtrack.wav");
             this.cmpAudioSoundtrack = new ƒ.ComponentAudio(this.audioSoundtrack, false, false);
             this.cmpAudioSoundtrack.connect(true);
-            this.cmpAudioSoundtrack.volume = 0.3;
+            this.cmpAudioSoundtrack.volume = 0.6 * WhiteWater.masterVolume;
             this.audioHit = new ƒ.Audio("./sounds/hit.wav");
             this.cmpAudioHit = new ƒ.ComponentAudio(this.audioHit, false, false);
             this.cmpAudioHit.connect(true);
-            this.cmpAudioHit.volume = 0.3;
+            this.cmpAudioHit.volume = 0.6 * WhiteWater.masterVolume;
         }
         playSFX(_sfx) {
             switch (_sfx) {

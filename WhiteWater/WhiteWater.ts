@@ -28,9 +28,15 @@ namespace WhiteWater {
         cmpCamera.mtxPivot.rotateY(180);
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
         console.log(gameNode);
-        
+
         document.getElementById("start").addEventListener("click", () => {
             document.getElementById("mainMenu").style.display = "none";
+            document.getElementById("UI-Level").style.display = "inline";
+            document.getElementById("UI-Points").style.display = "inline";
+            document.getElementById("UI-MaxLives").style.display = "inline";
+            document.getElementById("UI-CurrentLives").style.display = "inline";
+            document.getElementById("UI-Shield").style.display = "inline";
+            document.getElementById("UI-Timewarp").style.display = "inline";
             gameStart();
         });
         document.getElementById("option").addEventListener("click", () => {
@@ -63,17 +69,18 @@ namespace WhiteWater {
         }); */
         document.getElementById("back").addEventListener("click", () => {
             document.getElementById("optionMenuInGame").style.display = "none";
-            pauseGame();   
+            pauseGame();
         });
         document.getElementById("backMain").addEventListener("click", () => {
             document.getElementById("optionMenu").style.display = "none";
-            mainMenu();   
+            mainMenu();
         });
         document.getElementById("backMainFromHS").addEventListener("click", () => {
             document.getElementById("highscoreMenu").style.display = "none";
-            mainMenu();   
+            mainMenu();
         });
-
+        document.getElementById("MasterVolume").addEventListener("input", changeMasterVolume);
+        document.getElementById("MasterVolumeMainMenu").addEventListener("input", changeMasterVolume);
         mainMenu();
 
 
@@ -95,6 +102,7 @@ namespace WhiteWater {
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && deflectorShieldAvailable == true && gamestate == GAMESTATE.PLAYING) {
             deflectorShieldAvailable = false;
+            shieldCDToHTML("ACTIVE");
             deflectorShieldCooldown = 0;
             invulnerableActive = true;
             invulnerable = 0;
@@ -103,52 +111,49 @@ namespace WhiteWater {
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT]) && timeWarpCharges != 0 && gamestate == GAMESTATE.PLAYING || ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_RIGHT]) && timeWarpCharges != 0 && gamestate == GAMESTATE.PLAYING) {
             timeWarpCharges--;
             timeWarp = 0;
+            
             sfxPlayer.playSFX(SFXs.timewarpActiveSound);
             timeWarpActive = true;
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ESC]) && gamestate == GAMESTATE.PLAYING) {
             pauseGame();
-            //optionMenu();
         }
     }
 
     function update(_event: Event): void {
         hndKey();
         checkCollision();
-        //gameOver();
-        
 
         spawnCounter++;
-        //deflectorShieldCooldown++;
-        //invulnerable++;
-        //timeWarp++;
+
+        if (invulnerable == invulnerableEnd) {
+            invulnerableActive = false;
+            shieldCDToHTML("RECHARGING");
+            deflectorNode.removeAllChildren();
+        } else {
+            invulnerable++;
+        }
 
         if (deflectorShieldCooldown >= deflectorShieldCooldownMax) {
             if (deflectorShieldAvailable == false) {
                 sfxPlayer.playSFX(SFXs.shieldReloadedSound);
             }
+            shieldCDToHTML("AVAILABLE");
             deflectorShieldAvailable = true;
         } else {
             deflectorShieldCooldown++;
-        }
-
-        if (invulnerable == invulnerableEnd) {
-            invulnerableActive = false;
-            deflectorNode.removeAllChildren();
-        } else {
-            invulnerable++;
         }
 
         if (timeWarp == timeWarpEnd) {
             timeWarpActive = false;
         } else {
             timeWarp++;
-            
+
         }
         if (timeWarpActive) {
             spawnCounterTrue = spawnCounterTimewarp;
-        } else { 
-            spawnCounterTrue = spawnCounterMax; 
+        } else {
+            spawnCounterTrue = spawnCounterMax;
         }
 
         if (spawnCounter >= spawnCounterTrue) {
@@ -224,6 +229,7 @@ namespace WhiteWater {
         gamestateTemp = gamestate;
 
         currentLives = maxLives;
+        
 
         viewport.draw();
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
