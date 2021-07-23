@@ -33,7 +33,7 @@
 }
 
 #optionMenuInGame {
-    background-image: url("./ingameMenu.png");
+    background-image: url("./Pics/ingameMenu.png");
     background-repeat: no-repeat;
     width: 800px;
     height: 600px;
@@ -42,7 +42,7 @@
 }
 
 #pauseMenu {
-    background-image: url("./ingameMenu.png");
+    background-image: url("./Pics/ingamePauseMenu.png");
     background-repeat: no-repeat;
     width: 800px;
     height: 600px;
@@ -51,8 +51,42 @@
     left: 260px;
 }
 
+#gameOverMenu {
+    background-image: url("./Pics/ingameGameOVerMenu.png");
+    background-repeat: no-repeat;
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    top: 160px;
+    left: 260px;
+    color: aliceblue;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#gameOverInput {
+    left: 60px;
+    top: 120px;
+    position: absolute;
+    color: orange;
+    background-color: black;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: right;
+}
+
+#insertUsernameLabel {
+    left: 60px;
+    top: 100px;
+    position: absolute;
+}
+
+#pressEnter {
+    left: 40px;
+    top: 180px;
+    position: absolute;
+}
+
 #highscoreMenu {
-    background-image: url("./menuback2.png");
+    background-image: url("./Pics/menubackHighScore.png");
     width: 800px;
     height: 600px;
     position: absolute;
@@ -60,7 +94,7 @@
 }
 
 #start {
-    background-image: url("./buttonStart.png");
+    background-image: url("./Pics/buttonStart.png");
     border: none;
     border-radius: 0px;
     background-color: transparent;
@@ -78,7 +112,7 @@
 }
 
 #option {
-    background-image: url("./buttonOptions.png");
+    background-image: url("./Pics/buttonOptions.png");
     border: none;
     border-radius: 0px;
     background-color: transparent;
@@ -96,7 +130,7 @@
 }
 
 #highscore {
-    background-image: url("./buttonHighscore.png");
+    background-image: url("./Pics/buttonHighscore.png");
     border: none;
     border-radius: 0px;
     background-color: transparent;
@@ -114,11 +148,11 @@
 }
 
 #continue {
-    background-image: url("./buttonContinue.png");
+    background-image: url("./Pics/buttonContinue.png");
     border: none;
     border-radius: 0px;
     background-color: transparent;
-    top: 50px;
+    top: 70px;
     left: 34px;
     position: absolute;
     width: 180px;
@@ -130,16 +164,16 @@
 #continue:hover {
     width: 200px;
     height: 50px;
-    top: 48px;
+    top: 68px;
     left: 29px;
 }
 
 #option2 {
-    background-image: url("./buttonOptions.png");
+    background-image: url("./Pics/buttonOptions.png");
     border: none;
     border-radius: 0px;
     background-color: transparent;
-    top: 125px;
+    top: 135px;
     left: 34px;
     position: absolute;
     width: 180px;
@@ -151,12 +185,12 @@
 #option2:hover {
     width: 200px;
     height: 50px;
-    top: 123px;
+    top: 133px;
     left: 29px;
 }
 
 #optionMenuInGame {
-    background-image: url("./ingameMenu.png");
+    background-image: url("./Pics/ingameOptionsMenu.png");
     background-repeat: no-repeat;
     width: 800px;
     height: 600px;
@@ -166,7 +200,7 @@
 }
 
 #exit2 {
-    background-image: url("./buttonBack.png");
+    background-image: url("./Pics/buttonBack.png");
     border: none;
     border-radius: 0px;
     background-color: transparent;
@@ -187,7 +221,7 @@
 }
 
 #back {
-    background-image: url("./buttonBack.png");
+    background-image: url("./Pics/buttonBack.png");
     border: none;
     border-radius: 0px;
     background-color: transparent;
@@ -208,7 +242,7 @@
 }
 
 #backMain {
-    background-image: url("./buttonBack.png");
+    background-image: url("./Pics/buttonBack.png");
     border: none;
     border-radius: 0px;
     background-color: transparent;
@@ -226,7 +260,7 @@
 }
 
 #backMainFromHS {
-    background-image: url("./buttonBack.png");
+    background-image: url("./Pics/buttonBack.png");
     border: none;
     border-radius: 0px;
     background-color: transparent;
@@ -291,27 +325,27 @@ button {
 }
 
 #UI-Level {
-    left: 665px;
-    top: 110px;
+    left: 666px;
+    top: 112px;
     width: 50px;
     text-align: right;
 }
 
 #UI-Points {
-    left: 734px;
-    top: 171px;
+    left: 735px;
+    top: 173px;
     width: 50px;
     text-align: right;
 }
 
 #UI-Timewarp {
-    left: 38px;
+    left: 34px;
     top: 516px;
     text-align: left;
 }
 
 #UI-Shield {
-    left: 38px;
+    left: 34px;
     top: 434px;
     text-align: left;
 }

@@ -29,20 +29,27 @@
 <body>
     <canvas width="800" height="600" id="game_canvas"></canvas>
     <div class="hidden" id="mainMenu">
-        <img src="mainMenuBackground800600.png">
+        <img src="./Pics/mainMenuBackground800600.png">
         <button id="start"></button>
         <button id="option"></button>
         <button id="highscore"></button>
     </div>
 
     <div class="hidden" id="optionMenu">
-        <img src="menuback2.png">
+        <img src="./Pics/menubackOptions.png">
         <input id="MasterVolumeMainMenu" type="range" step="10" value="50">
         <div id="MasterVolumeMainMenuTag">
             Master Volume
         </div>
         <button id="backMain"></button>
 
+    </div>
+
+    <div class="hidden" id="gameOverMenu">
+        <label id="insertUsernameLabel">Insert Username: </label>
+        </br>
+        <input type="text" id="gameOverInput" maxlength="10">
+        <label id="pressEnter">Press ENTER to confirm! </label>
     </div>
 
     <div class="hidden" id="highscoreMenu">

@@ -14,8 +14,8 @@ namespace WhiteWater {
         backGroundNode.appendChild(new ScrollingBackground(0));
         backGroundNode.appendChild(new ScrollingBackground(22));
         backGroundNode.appendChild(new ScrollingBackground(44));
-        uiNode.appendChild(new UserInterface(-10.7, 10, "leftpanel.png"));
-        uiNode.appendChild(new UserInterface(10.7, 10, "rightpanel.png"));
+        uiNode.appendChild(new UserInterface(-10.7, 10, "./Pics/leftpanel.png"));
+        uiNode.appendChild(new UserInterface(10.7, 10, "./Pics/rightpanel.png"));
         viewportNode.addChild(uiNode);
         viewportNode.addChild(backGroundNode);
         viewportNode.addChild(lootables);

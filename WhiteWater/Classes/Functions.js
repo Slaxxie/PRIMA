@@ -216,10 +216,12 @@ var WhiteWater;
     function gameOverMenu() {
         WhiteWater.gamestate = WhiteWater.GAMESTATE.GAMEOVER;
         console.log(WhiteWater.gamestate);
-        let name = prompt("INSERT NAME", "Player");
+        // let name: string = prompt("INSERT NAME", "Player");
+        document.getElementById("gameOverMenu").style.display = "inline";
+        document.getElementById("gameOverInput").onkeydown = evalInput;
         // tslint:disable-next-line: no-any
-        const regex = /^[a-zA-Z0-9]*$/;
-        const isExisting = regex.test(name);
+        /* const regex: any = /^[a-zA-Z0-9]*$/;
+        const isExisting: boolean = regex.test(name);
         console.log(name.length);
         if (!isExisting || name.length <= 3 || name.length >= 10) {
             gameOverMenu();
@@ -228,20 +230,31 @@ var WhiteWater;
         console.log(isExisting);
         if (name == null) {
             name = "Player";
+        } */
+        //location.reload();
+    }
+    WhiteWater.gameOverMenu = gameOverMenu;
+    function evalInput(_event) {
+        if (_event.key != "Enter") {
+            return;
+        }
+        let nameInputField = document.getElementById("gameOverInput");
+        let input = nameInputField.value;
+        if (input === "" || input === null) {
+            input = "Anonymous";
         }
         let i = 0;
         while (true) {
             let score = localStorage.getItem(i.toString());
             if (!score) {
                 // tslint:disable-next-line: quotemark
-                localStorage.setItem(i.toString(), '{"name": "' + name + '","points": ' + WhiteWater.playerPoints + '}');
+                localStorage.setItem(i.toString(), '{"name": "' + input + '","points": ' + WhiteWater.playerPoints + '}');
                 break;
             }
             i++;
         }
         location.reload();
     }
-    WhiteWater.gameOverMenu = gameOverMenu;
     function topTen() {
         let i = 0;
         while (true) {

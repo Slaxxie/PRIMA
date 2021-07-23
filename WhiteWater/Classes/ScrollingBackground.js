@@ -19,43 +19,43 @@ var WhiteWater;
             } while (WhiteWater.backGroundStateTemp == backGroundState);
             switch (backGroundState) {
                 case 1: {
-                    backGroundTex = new ƒ.TextureImage("spaceback1.png");
+                    backGroundTex = new ƒ.TextureImage("./Pics/spaceback1.png");
                     break;
                 }
                 case 2: {
-                    backGroundTex = new ƒ.TextureImage("spaceback1.png");
+                    backGroundTex = new ƒ.TextureImage("./Pics/spaceback1.png");
                     break;
                 }
                 case 3: {
-                    backGroundTex = new ƒ.TextureImage("spaceback2.png");
+                    backGroundTex = new ƒ.TextureImage("./Pics/spaceback2.png");
                     break;
                 }
                 case 4: {
-                    backGroundTex = new ƒ.TextureImage("spaceback2.png");
+                    backGroundTex = new ƒ.TextureImage("./Pics/spaceback2.png");
                     break;
                 }
                 case 5: {
-                    backGroundTex = new ƒ.TextureImage("spaceback3.png");
+                    backGroundTex = new ƒ.TextureImage("./Pics/spaceback3.png");
                     break;
                 }
                 case 6: {
-                    backGroundTex = new ƒ.TextureImage("spaceback3.png");
+                    backGroundTex = new ƒ.TextureImage("./Pics/spaceback3.png");
                     break;
                 }
                 case 7: {
-                    backGroundTex = new ƒ.TextureImage("spaceback4.png");
+                    backGroundTex = new ƒ.TextureImage("./Pics/spaceback4.png");
                     break;
                 }
                 case 8: {
-                    backGroundTex = new ƒ.TextureImage("spaceback5.png");
+                    backGroundTex = new ƒ.TextureImage("./Pics/spaceback5.png");
                     break;
                 }
                 case 9: {
-                    backGroundTex = new ƒ.TextureImage("spaceback6.png");
+                    backGroundTex = new ƒ.TextureImage("./Pics/spaceback6.png");
                     break;
                 }
                 default: {
-                    backGroundTex = new ƒ.TextureImage("spaceback1.png");
+                    backGroundTex = new ƒ.TextureImage("./Pics/spaceback1.png");
                     break;
                 }
             }
